@@ -23,7 +23,6 @@ jobs:
     - name: Initialization environment
       env:
         DEBIAN_FRONTEND: noninteractive
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       run: |
         sudo apt-get update
         sudo apt-get -y install unzip libtool-bin curl cmake gperf gawk flex bison nano xxd fakeroot \
@@ -106,8 +105,8 @@ jobs:
     - name: Upload binaries to release
       uses: svenstaro/upload-release-action@v1-release
       with:
-        repo_token: ${{ secrets.R_TOKEN }}
+        repo_token: ${{ secrets.REPO_TOKEN }}
         file: /opt/images/*.trx
-        tag: AtuoBuild
+        tag: AutoBuild
         overwrite: true
         file_glob: true
