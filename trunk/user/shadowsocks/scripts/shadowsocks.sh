@@ -65,8 +65,6 @@ local type=$stype
 		sed -i 's/\\//g' $config_file
 		;;
 	trojan)
-		tj_bin="/usr/bin/trojan"
-                if [ ! -f "$tj_bin" ]; then
                 if [ ! -f "/tmp/trojan" ];then
 			curl -k -s -o /tmp/trojan --connect-timeout 10 --retry 3 https://cdn.jsdelivr.net/gh/chongshengB/rt-n56u/trunk/user/trojan/trojan
 			if [ ! -f "/tmp/trojan" ]; then
@@ -76,11 +74,7 @@ local type=$stype
 			else
 				logger -t "SS" "trojan二进制文件下载成功"
 				chmod -R 777 /tmp/trojan
-				tj_bin="/tmp/trojan"
-			fi
-			else
-			tj_bin="/tmp/trojan"
-			fi		
+		        fi
 		fi
 		if [ "$2" = "0" ]; then
 		lua /etc_ro/ss/gentrojanconfig.lua $1 nat 1080 >$trojan_json_file
@@ -91,8 +85,6 @@ local type=$stype
 		fi
 		;;
 	v2ray)
-		v2_bin="/usr/bin/v2ray"
-                if [ ! -f "$v2_bin" ]; then
                 if [ ! -f "/tmp/v2ray" ];then
 			curl -k -s -o /tmp/v2ray --connect-timeout 10 --retry 3 https://cdn.jsdelivr.net/gh/chongshengB/rt-n56u/trunk/user/v2ray/v2ray
 			if [ ! -f "/tmp/v2ray" ]; then
@@ -102,10 +94,6 @@ local type=$stype
 			else
 				logger -t "SS" "v2ray二进制文件下载成功"
 				chmod -R 777 /tmp/v2ray
-				v2_bin="/tmp/v2ray"
-			fi
-			else
-			v2_bin="/tmp/v2ray"
 			fi
 		fi
 		v2ray_enable=1
