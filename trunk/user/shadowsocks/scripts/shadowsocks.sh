@@ -39,8 +39,8 @@ find_bin() {
 	ssr) ret="/usr/bin/ssr-redir" ;;
 	ssr-local) ret="/usr/bin/ssr-local" ;;
 	ssr-server) ret="/usr/bin/ssr-server" ;;
-	v2ray) ret="/tmp/v2ray" ;;
-	trojan) ret="/tmp/trojan" ;;
+	v2ray) ret="/usr/bin/v2ray" ;;
+	trojan) ret="/usr/bin/trojan" ;;
 	socks5) ret="/usr/bin/ipt2socks" ;;
 	esac
 	echo $ret
@@ -65,7 +65,9 @@ local type=$stype
 		sed -i 's/\\//g' $config_file
 		;;
 	trojan)
-                if [ ! -f "/tmp/trojan" ];then
+                tj_bin="/usr/bin/trojan"
+		if [ ! -f "$tj_bin" ]; then
+		if [ ! -f "/tmp/trojan" ];then
 			curl -k -s -o /tmp/trojan --connect-timeout 10 --retry 3 https://cdn.jsdelivr.net/gh/yiailake/rt-n56u@master/trunk/user/trojan/trojan
 			if [ ! -f "/tmp/trojan" ]; then
 				logger -t "SS" "trojan二进制文件下载失败，可能是地址失效或者网络异常！"
@@ -74,8 +76,13 @@ local type=$stype
 			else
 				logger -t "SS" "trojan二进制文件下载成功"
 				chmod -R 777 /tmp/trojan
-		        fi
+				tj_bin="/tmp/trojan"
+			fi
+			else
+			tj_bin="/tmp/trojan"
+			fi
 		fi
+		#tj_file=$trojan_json_file
 		if [ "$2" = "0" ]; then
 		lua /etc_ro/ss/gentrojanconfig.lua $1 nat 1080 >$trojan_json_file
 		sed -i 's/\\//g' $trojan_json_file
@@ -85,7 +92,9 @@ local type=$stype
 		fi
 		;;
 	v2ray)
-                if [ ! -f "/tmp/v2ray" ];then
+                v2_bin="/usr/bin/v2ray"
+		if [ ! -f "$v2_bin" ]; then
+		if [ ! -f "/tmp/v2ray" ];then
 			curl -k -s -o /tmp/v2ray --connect-timeout 10 --retry 3 https://cdn.jsdelivr.net/gh/yiailake/rt-n56u@master/trunk/user/v2ray/v2ray
 			if [ ! -f "/tmp/v2ray" ]; then
 				logger -t "SS" "v2ray二进制文件下载失败，可能是地址失效或者网络异常！"
@@ -94,6 +103,10 @@ local type=$stype
 			else
 				logger -t "SS" "v2ray二进制文件下载成功"
 				chmod -R 777 /tmp/v2ray
+				v2_bin="/tmp/v2ray"
+			fi
+			else
+			v2_bin="/tmp/v2ray"
 			fi
 		fi
 		v2ray_enable=1
